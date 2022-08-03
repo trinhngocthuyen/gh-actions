@@ -1,0 +1,7 @@
+name: "Default"
+description: "Default"
+runs:
+  using: "composite"
+  steps:
+    - run: This is just a default action.
+      shell: bash
