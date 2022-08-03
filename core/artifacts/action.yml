@@ -1,0 +1,61 @@
+name: "default"
+description: "default"
+inputs:
+  artifacts-upload-name:
+    description: "Artifacts name (to upload)"
+  artifacts-upload-path:
+    description: "Artifacts path (to upload)"
+  artifacts-download-name:
+    description: "Artifacts name (to download)"
+  artifacts-download-path:
+    description: "Artifacts path (to download)"
+  artifacts-download-name-2:
+    description: "Artifacts name (to download)"
+  artifacts-download-path-2:
+    description: "Artifacts path (to download)"
+  artifacts-download-name-3:
+    description: "Artifacts name (to download)"
+  artifacts-download-path-3:
+    description: "Artifacts path (to download)"
+  artifacts-download-name-4:
+    description: "Artifacts name (to download)"
+  artifacts-download-path-4:
+    description: "Artifacts path (to download)"
+  artifacts-download-name-5:
+    description: "Artifacts name (to download)"
+  artifacts-download-path-5:
+    description: "Artifacts path (to download)"
+
+runs:
+  using: "composite"
+  steps:
+    - if: inputs.artifacts-download-name || inputs.artifacts-download-path
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.artifacts-download-name }}
+        path: ${{ inputs.artifacts-download-path }}
+    - if: inputs.artifacts-download-name-2 || inputs.artifacts-download-path-2
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.artifacts-download-name-2 }}
+        path: ${{ inputs.artifacts-download-path-2 }}
+    - if: inputs.artifacts-download-name-3 || inputs.artifacts-download-path-3
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.artifacts-download-name-3 }}
+        path: ${{ inputs.artifacts-download-path-3 }}
+    - if: inputs.artifacts-download-name-4 || inputs.artifacts-download-path-4
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.artifacts-download-name-4 }}
+        path: ${{ inputs.artifacts-download-path-4 }}
+    - if: inputs.artifacts-download-name-5 || inputs.artifacts-download-path-5
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.artifacts-download-name-5 }}
+        path: ${{ inputs.artifacts-download-path-5 }}
+    - if: inputs.artifacts-upload-name || inputs.artifacts-upload-path
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artifacts-upload-name }}
+        path: ${{ inputs.artifacts-upload-path }}

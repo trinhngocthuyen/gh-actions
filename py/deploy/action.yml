@@ -1,0 +1,31 @@
+name: "deploy"
+description: "deploy"
+inputs:
+  pypi-token:
+    description: "PyPI token"
+  hook-version-file:
+    description: "Hook version file (for pre-release version)"
+  hook-version-suffix:
+    description: "Version suffix (for re-release version)"
+
+runs:
+  using: "composite"
+  steps:
+    - if: inputs.hook-version-file && inputs.hook-version-suffix
+      run: |
+        echo -n ${{ inputs.hook-version-suffix }} >> ${{ inputs.hook-version-file }}
+        echo "version = $(cat ${{ inputs.hook-version-file }})"
+      shell: bash
+    - if: inputs.pypi-token
+      run: |
+        python3 -m pip install -r requirements.txt
+        python3 setup.py bdist_wheel
+      shell: bash
+    - if: inputs.pypi-token
+      uses: pypa/gh-action-pypi-publish@v1.5.0
+      with:
+        user: __token__
+        password: ${{ inputs.pypi-token }}
+    - if: inputs.pypi-token
+      run: rm -rf build dist
+      shell: bash

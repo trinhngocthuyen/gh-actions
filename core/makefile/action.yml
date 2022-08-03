@@ -1,0 +1,11 @@
+name: "default"
+description: "default"
+inputs:
+  targets:
+    description: "Makefile targets"
+
+runs:
+  using: "composite"
+  steps:
+    - run: make ${{ inputs.targets }}
+      shell: bash
