@@ -1,0 +1,33 @@
+name: "default"
+description: "default"
+inputs:
+  token:
+    description: "Push token"
+  paths:
+    description: "Paths to add"
+    default: "."
+  user:
+    description: "Git user"
+    default: github-actions[bot]
+  email:
+    description: "Git email"
+    default: github-actions[bot]@users.noreply.github.com
+  commit_msg:
+    description: "Commit message"
+
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        git config --local user.name "${{ inputs.user }}"
+        git config --local user.email "${{ inputs.email }}"
+        git remote add __bot__ "https://${{ inputs.token }}@github.com/${GITHUB_REPOSITORY}.git"
+        git remote -v
+      shell: bash
+    - run: |
+        git add $(echo ${{ inputs.paths }})
+        git commit -m "${{ inputs.commit_msg }} "
+      shell: bash
+    - run: |
+        git remote remove __bot__
+      shell: bash
