@@ -1,0 +1,57 @@
+name: "default"
+description: "default"
+inputs:
+  version:
+    description: "Release version"
+  version-file:
+    description: "Path to release version"
+  ref-name:
+    description: "Ref name"
+    default: ${{ github.ref_name }}
+  token:
+    description: "Github token"
+    default: ${{ github.token }}
+  notes:
+    description: "Release notes"
+  pre-release:
+    description: "Whether this is a pre-release"
+    default: false
+  draft:
+    description: "Whether this is a draft"
+    default: false
+  generate-release-notes:
+    description: "Whether to generate release notes"
+    default: false
+
+runs:
+  using: "composite"
+  steps:
+    - if: inputs.version
+      run: |
+        printf ${{ inputs.version }} > ${{ runner.temp }}/version
+      shell: bash
+    - if: inputs.version-file
+      run: |
+        cp ${{ inputs.version-file }} ${{ runner.temp }}/version
+      shell: bash
+    - id: calc_version
+      run: |
+        echo "::set-output name=version::$(cat ${{ runner.temp }}/version)"
+      shell: bash
+    - run: |
+        curl \
+          -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token ${{ inputs.token }}" \
+          ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases \
+          -d '
+          {
+            "tag_name": "${{ steps.calc_version.outputs.version }}",
+            "target_commitish": "${{ inputs.ref-name }}",
+            "name": "${{ steps.calc_version.outputs.version }}",
+            "body":"${{ inputs.body }}",
+            "draft": ${{ inputs.draft }},
+            "prerelease": ${{ inputs.pre-release }},
+            "generate_release_notes": ${{ inputs.generate-release-notes }}
+          }'
+      shell: bash

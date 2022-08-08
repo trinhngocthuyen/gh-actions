@@ -1,0 +1,27 @@
+name: "default"
+description: "default"
+inputs:
+  version:
+    description: "Version"
+  version-file:
+    description: "Version file"
+
+runs:
+  using: "composite"
+  steps:
+    - if: inputs.version
+      run: |
+        printf ${{ inputs.version }} > ${{ runner.temp }}/version
+      shell: bash
+    - if: inputs.version-file
+      run: |
+        cp ${{ inputs.version-file }} ${{ runner.temp }}/version
+      shell: bash
+    - id: calc_version
+      run: |
+        echo "::set-output name=version::$(cat ${{ runner.temp }}/version)"
+      shell: bash
+    - run: |
+        echo ${{ steps.calc_version.outputs.version }} | awk -F. '/[0-9]+\./{$NF++;print}' OFS=. > ${{ inputs.version-file }}
+        echo "Bumped version = $(cat ${{ inputs.version-file }})"
+      shell: bash
