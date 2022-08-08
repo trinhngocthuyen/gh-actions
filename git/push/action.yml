@@ -3,6 +3,7 @@ description: "default"
 inputs:
   token:
     description: "Push token"
+    default: ${{ secrets.GITHUB_TOKEN }}
   paths:
     description: "Paths to add"
     default: "."
