@@ -1,0 +1,15 @@
+name: Lint
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/rb/install@main
+        with:
+          bundle-install: true
+      - name: Rubocop
+        run: bundle exec rubocop
+        shell: bash
