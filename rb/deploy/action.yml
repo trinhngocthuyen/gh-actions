@@ -1,8 +1,8 @@
 name: "deploy"
 description: "deploy"
 inputs:
-  pypi-token:
-    description: "PyPI token"
+  rubygems-token:
+    description: "RubyGems token"
   hook-version-file:
     description: "Hook version file (for pre-release version)"
   hook-version-suffix:
@@ -16,16 +16,13 @@ runs:
         echo -n $(head -n 1 ${{ inputs.hook-version-file }})${{ inputs.hook-version-suffix }} > ${{ inputs.hook-version-file }}
         echo "version = $(cat ${{ inputs.hook-version-file }})"
       shell: bash
-    - if: inputs.pypi-token
+    - if: inputs.rubygems-token
       run: |
-        python3 -m pip install -r requirements.txt
-        python3 setup.py bdist_wheel
-      shell: bash
-    - if: inputs.pypi-token
-      uses: pypa/gh-action-pypi-publish@v1.5.0
-      with:
-        user: __token__
-        password: ${{ inputs.pypi-token }}
-    - if: inputs.pypi-token
-      run: rm -rf build dist
+        mkdir -p ~/.gem
+        echo "---" >> ~/.gem/credentials
+        echo ":rubygems_api_key: ${{ inputs.rubygems-token }}" >> ~/.gem/credentials
+        chmod 0600 ~/.gem/credentials
+        gem build
+        find *.gem -exec gem push {} \;
+        rm -rf *.gem ~/.gem/credentials
       shell: bash
