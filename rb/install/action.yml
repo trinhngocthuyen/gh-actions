@@ -8,6 +8,12 @@ inputs:
     description: "Ruby version"
     required: true
     default: 2.7
+  bundle-install:
+    description: "Running bundle install"
+    default: false
+  bundle-config-path:
+    description: "Location to install gems"
+    default: ~/.bundle
 
 runs:
   using: "composite"
@@ -18,3 +24,9 @@ runs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ inputs.ruby-version }}
+    - if: inputs.bundle-install && inputs.bundle-config-path
+      run: bundle config path ${{ inputs.bundle-config-path }}
+      shell: bash
+    - if: inputs.bundle-install
+      run: bundle install
+      shell: bash
