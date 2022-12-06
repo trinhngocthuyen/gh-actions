@@ -1,0 +1,20 @@
+name: "default"
+description: "default"
+inputs:
+  submodules:
+    description: "Whether to checkout submodules"
+    default: false
+  ruby-version:
+    description: "Ruby version"
+    required: true
+    default: 2.7
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: ${{ inputs.submodules }}
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ inputs.ruby-version }}
