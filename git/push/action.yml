@@ -22,7 +22,7 @@ runs:
     - run: |
         git config --local user.name "${{ inputs.user }}"
         git config --local user.email "${{ inputs.email }}"
-        git remote add __bot__ "https://${{ inputs.token }}@github.com/${GITHUB_REPOSITORY}.git"
+        git remote add __bot__ "https://__bot__:${{ inputs.token }}@github.com/${GITHUB_REPOSITORY}.git"
         git remote -v
       shell: bash
     - run: |
