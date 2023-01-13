@@ -19,7 +19,7 @@ runs:
       shell: bash
     - id: calc_version
       run: |
-        echo "::set-output name=version::$(cat ${{ runner.temp }}/version)"
+        echo "version=$(cat ${{ runner.temp }}/version)" >> $GITHUB_OUTPUT
       shell: bash
     - run: |
         echo ${{ steps.calc_version.outputs.version }} | awk -F. '/[0-9]+\./{$NF++;print}' OFS=. > ${{ inputs.version-file }}
