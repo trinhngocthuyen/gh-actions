@@ -7,6 +7,7 @@ inputs:
     description: "Running bundle install"
   working-dir:
     description: "Working dir"
+    default: "."
   ruby-version:
     description: "Ruby version"
   python-version:
@@ -24,13 +25,11 @@ runs:
       if: inputs.python-version
       with:
         python-version: ${{ inputs.python-version }}
-    - if: inputs.working-dir
-      run: |
-        cd ${{ inputs.working-dir }}
-      shell: bash
     - if: inputs.bundle-install
+      working-directory: ${{ inputs.working-dir }}
       run: bundle install
       shell: bash
     - if: inputs.pod-install
+      working-directory: ${{ inputs.working-dir }}
       run: bundle exec pod install || (echo "Retry with --repo-update" && bundle exec pod install --repo-update)
       shell: bash
