@@ -1,0 +1,24 @@
+name: "default"
+description: "default"
+inputs:
+  bundle-install:
+    description: "Running bundle install"
+  pod-install:
+    description: "Running bundle install"
+  working-dir:
+    description: "Working dir"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - if: inputs.working-dir
+      run: |
+        cd ${{ inputs.working-dir }}
+      shell: bash
+    - if: inputs.bundle-install
+      run: bundle install
+      shell: bash
+    - if: inputs.pod-install
+      run: bundle exec pod install || (echo "Retry with --repo-update" && bundle exec pod install --repo-update)
+      shell: bash
