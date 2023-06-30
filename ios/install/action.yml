@@ -7,11 +7,23 @@ inputs:
     description: "Running bundle install"
   working-dir:
     description: "Working dir"
+  ruby-version:
+    description: "Ruby version"
+  python-version:
+    description: "Python version"
 
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@v1
+      if: inputs.ruby-version
+      with:
+        ruby-version: ${{ inputs.ruby-version }}
+    - uses: actions/setup-python@v4
+      if: inputs.python-version
+      with:
+        python-version: ${{ inputs.python-version }}
     - if: inputs.working-dir
       run: |
         cd ${{ inputs.working-dir }}
