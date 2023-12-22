@@ -5,9 +5,9 @@ inputs:
     description: "Release version"
   version-file:
     description: "Path to release version"
-  ref-name:
-    description: "Ref name"
-    default: ${{ github.ref_name }}
+  sha:
+    description: "sha"
+    default: ${{ github.sha }}
   token:
     description: "Github token"
     default: ${{ github.token }}
@@ -47,7 +47,7 @@ runs:
           -d '
           {
             "tag_name": "${{ steps.calc_version.outputs.version }}",
-            "target_commitish": "${{ inputs.ref-name }}",
+            "target_commitish": "${{ inputs.sha }}",
             "name": "${{ steps.calc_version.outputs.version }}",
             "body":"${{ inputs.body }}",
             "draft": ${{ inputs.draft }},
