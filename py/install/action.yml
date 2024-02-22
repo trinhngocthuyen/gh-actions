@@ -6,8 +6,6 @@ inputs:
     default: false
   python-version:
     description: "Python version"
-    required: true
-    default: 3.8
 
 runs:
   using: "composite"
@@ -17,4 +15,4 @@ runs:
         submodules: ${{ inputs.submodules }}
     - uses: actions/setup-python@v4
       with:
-        python-version: ${{ inputs.python-version }}
+        python-version: ${{ inputs.python-version || env.PYTHON_VERSION || '3.10' }}
