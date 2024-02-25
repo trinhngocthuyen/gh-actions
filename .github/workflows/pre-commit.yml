@@ -1,0 +1,12 @@
+name: Pre-commit
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
+      - name: Pre-commit
+        uses: pre-commit/action@v3.0.1
