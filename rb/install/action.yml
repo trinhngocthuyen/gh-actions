@@ -7,7 +7,7 @@ inputs:
   ruby-version:
     description: "Ruby version"
     required: true
-    default: 2.7
+    default: '3.0'
   bundle-install:
     description: "Running bundle install"
     default: false
