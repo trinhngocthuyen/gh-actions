@@ -1,0 +1,25 @@
+name: "default"
+description: "default"
+inputs:
+  checkout:
+    description: "Whether to check out the project"
+    default: true
+  ruby-version:
+    description: "Ruby version"
+  python-version:
+    description: "Python version"
+  # Add more languages here
+
+runs:
+  using: "composite"
+  steps:
+    - if: inputs.checkout
+      uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@v1
+      if: inputs.ruby-version
+      with:
+        ruby-version: ${{ inputs.ruby-version }}
+    - uses: actions/setup-python@v4
+      if: inputs.python-version
+      with:
+        python-version: ${{ inputs.python-version }}
