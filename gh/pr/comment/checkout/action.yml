@@ -1,0 +1,27 @@
+name: "default"
+description: "default"
+
+outputs:
+  base_ref:
+    description: "PR base ref"
+    value: ${{ steps.calc_branch.outputs.base_ref }}
+  base_sha:
+    description: "PR base sha"
+    value: ${{ steps.calc_branch.outputs.base_sha }}
+  head_ref:
+    description: "PR head ref"
+    value: ${{ steps.calc_branch.outputs.head_ref }}
+  head_sha:
+    description: "PR head sha"
+    value: ${{ steps.calc_branch.outputs.head_sha }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get PR branch
+      uses: xt0rted/pull-request-comment-branch@v2
+      id: calc_branch
+    - name: Checkout PR branch
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ steps.calc_branch.outputs.head_sha }}
