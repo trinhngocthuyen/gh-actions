@@ -1,0 +1,27 @@
+name: "default"
+description: "default"
+inputs:
+  sha:
+    description: "Sha to add the check"
+    required: true
+  exec:
+    description: "Command to run"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set latest commit status as pending
+      uses: myrotvorets/set-commit-status-action@v2.0.1
+      with:
+        sha: ${{ inputs.sha }}
+        status: pending
+    - name: Exec
+      run: ${{ inputs.exec }}
+      shell: bash
+    - name: Set latest commit status as ${{ job.status }}
+      uses: myrotvorets/set-commit-status-action@v2.0.1
+      if: always()
+      with:
+        sha: ${{ inputs.sha }}
+        status: ${{ job.status }}
