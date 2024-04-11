@@ -1,8 +1,11 @@
 name: "default"
 description: "default"
 inputs:
+  checkout:
+    description: "Whether to check out the project"
+    default: true
   submodules:
-    description: "Whether to checkout submodules"
+    description: "Whether to check out submodules"
     default: false
   ruby-version:
     description: "Ruby version"
@@ -18,7 +21,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
+    - if: inputs.checkout
+      uses: actions/checkout@v3
       with:
         submodules: ${{ inputs.submodules }}
     - uses: ruby/setup-ruby@v1
