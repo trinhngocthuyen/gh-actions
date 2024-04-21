@@ -14,14 +14,14 @@ runs:
       with:
         github-token: ${{ inputs.github-token }}
         script: |
-          const title = '0.0.1';
+          const title = '${{ inputs.title }}';
           const milestones = await github.rest.issues.listMilestones({
             owner: context.repo.owner,
             repo: context.repo.repo,
           });
           const milestone = milestones.data.find(m => m.title === title);
           if (!milestone) {
-            console.error(`Milestone '${milestoneTitle}' not found.`);
+            console.error(`Milestone '${title}' not found.`);
             return;
           }
           await github.rest.issues.update({
