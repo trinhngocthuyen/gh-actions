@@ -8,9 +8,6 @@ on:
       deploy-stable:
         description: Deploy a stable version
         type: boolean
-      create-milestone:
-        description: Whether to create new milestone
-        type: boolean
     secrets:
       GH_TOKEN:
         required: true
@@ -64,14 +61,3 @@ jobs:
         with:
           commit_msg: "[skip ci] CHORE: Bump version"
           token: ${{ secrets.GH_TOKEN }}
-      - name: Calc milestone version
-        if: inputs.create-milestone
-        id: calc_milestone_version
-        run: echo "version=$(cat VERSION)" >> "$GITHUB_OUTPUT"
-        shell: bash
-      - name: Create milestone
-        if: inputs.create-milestone
-        uses: trinhngocthuyen/gh-actions/gh/milestone/create@main
-        with:
-          github-token: ${{ secrets.GH_TOKEN }}
-          title: ${{ steps.calc_milestone_version.outputs.version }}
