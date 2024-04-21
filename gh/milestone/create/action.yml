@@ -3,7 +3,7 @@ description: "default"
 inputs:
   github-token:
     description: Github Token
-    default: ${{ secrets.GITHUB_TOKEN }}
+    required: true
   title:
     description: "Milestone title"
 
