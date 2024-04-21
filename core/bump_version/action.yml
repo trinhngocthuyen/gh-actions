@@ -9,6 +9,9 @@ outputs:
   version:
     description: "bumped version"
     value: ${{ steps.bump_version.outputs.version }}
+  prev_version:
+    description: "previous version"
+    value: ${{ steps.calc_version.outputs.version }}
 
 runs:
   using: "composite"
