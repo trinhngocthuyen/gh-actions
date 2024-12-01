@@ -24,6 +24,7 @@ runs:
             console.error(`Milestone '${title}' not found.`);
             return;
           }
+          console.log(`Asssign milestone ${title} to PR: ${context.payload.pull_request.number}`);
           await github.rest.issues.update({
             owner: context.repo.owner,
             repo: context.repo.repo,
