@@ -19,7 +19,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - if: inputs.checkout
+    - if: ${{ inputs.checkout == 'true' }}
       uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
       if: inputs.ruby-version
@@ -29,11 +29,11 @@ runs:
       if: inputs.python-version
       with:
         python-version: ${{ inputs.python-version }}
-    - if: inputs.bundle-install
+    - if: ${{ inputs.bundle-install == 'true' }}
       working-directory: ${{ inputs.working-directory }}
       run: bundle install
       shell: bash
-    - if: inputs.pod-install
+    - if: ${{ inputs.pod-install == 'true' }}
       working-directory: ${{ inputs.working-directory }}
       run: bundle exec pod install || (echo "Retry with --repo-update" && bundle exec pod install --repo-update)
       shell: bash

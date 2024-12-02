@@ -21,16 +21,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - if: inputs.checkout
+    - if: ${{ inputs.checkout == 'true' }}
       uses: actions/checkout@v3
       with:
         submodules: ${{ inputs.submodules }}
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ inputs.ruby-version }}
-    - if: inputs.bundle-install && inputs.bundle-config-path
+    - if: ${{ inputs.bundle-install == 'true' }} && inputs.bundle-config-path
       run: bundle config path ${{ inputs.bundle-config-path }}
       shell: bash
-    - if: inputs.bundle-install
+    - if: ${{ inputs.bundle-install == 'true' }}
       run: bundle install
       shell: bash
